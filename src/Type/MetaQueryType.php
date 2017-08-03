@@ -2,7 +2,8 @@
 namespace WPGraphQL\MetaQuery\Type;
 
 use GraphQL\Type\Definition\EnumType;
-use GraphQL\Type\Definition\InputObjectType;
+use WPGraphQL\Type\WPEnumType;
+use WPGraphQL\Type\WPInputObjectType;
 use WPGraphQL\Types;
 
 /**
@@ -12,10 +13,11 @@ use WPGraphQL\Types;
  *
  * @package WPGraphQL\Type
  */
-class MetaQueryType extends InputObjectType {
+class MetaQueryType extends WPInputObjectType {
 
 	private static $meta_compare_enum;
 	private static $meta_type;
+	protected static $fields;
 
 	/**
 	 * MetaQueryType constructor.
@@ -27,42 +29,48 @@ class MetaQueryType extends InputObjectType {
 	public function __construct() {
 		$config = [
 			'name'   => 'metaQuery',
-			'fields' => function() {
-				$fields = [
-					'relation'  => [
-						'type' => Types::relation_enum(),
-					],
-					'metaArray' => Types::list_of(
-						new InputObjectType( [
-							'name'   => 'metaArray',
-							'fields' => function() {
-								$fields = [
-									'key'     => [
-										'type'        => Types::string(),
-										'description' => __( 'Custom field key', 'wp-graphql' ),
-									],
-									'value'   => [
-										'type'        => Types::string(),
-										'description' => __( 'Custom field value', 'wp-graphql' ),
-									],
-									'compare' => [
-										'type'        => self::meta_compare_enum(),
-										'description' => __( 'Custom field value', 'wp-graphql' ),
-									],
-									'type'    => [
-										'type'        => self::meta_type_enum(),
-										'description' => __( 'Custom field value', 'wp-graphql' ),
-									],
-								];
-								return $fields;
-							},
-						] )
-					),
-				];
-				return $fields;
-			},
+			'fields' => self::fields(),
 		];
 		parent::__construct( $config );
+	}
+
+	protected static function fields() {
+
+		if ( null === self::$fields ) :
+			self::$fields = [
+				'relation'  => [
+					'type' => Types::relation_enum(),
+				],
+				'metaArray' => Types::list_of(
+					new WPInputObjectType( [
+						'name'   => 'metaArray',
+						'fields' => function() {
+							$fields = [
+								'key'     => [
+									'type'        => Types::string(),
+									'description' => __( 'Custom field key', 'wp-graphql' ),
+								],
+								'value'   => [
+									'type'        => Types::string(),
+									'description' => __( 'Custom field value', 'wp-graphql' ),
+								],
+								'compare' => [
+									'type'        => self::meta_compare_enum(),
+									'description' => __( 'Custom field value', 'wp-graphql' ),
+								],
+								'type'    => [
+									'type'        => self::meta_type_enum(),
+									'description' => __( 'Custom field value', 'wp-graphql' ),
+								],
+							];
+							return $fields;
+						},
+					] )
+				),
+			];
+		endif;
+		return ! empty( self::$fields ) ? self::$fields : null;
+
 	}
 
 	/**
@@ -75,7 +83,7 @@ class MetaQueryType extends InputObjectType {
 	 */
 	private static function meta_compare_enum() {
 		if ( null === self::$meta_compare_enum ) {
-			self::$meta_compare_enum = new EnumType( [
+			self::$meta_compare_enum = new WPEnumType( [
 				'name'   => 'metaCompare',
 				'values' => [
 					[
@@ -136,7 +144,7 @@ class MetaQueryType extends InputObjectType {
 					],
 				],
 			] );
-		}
+		} // End if().
 		return ! empty( self::$meta_compare_enum ) ? self::$meta_compare_enum : null;
 	}
 
@@ -150,7 +158,7 @@ class MetaQueryType extends InputObjectType {
 	 */
 	private static function meta_type_enum() {
 		if ( null === self::$meta_type ) {
-			self::$meta_type = new EnumType( [
+			self::$meta_type = new WPEnumType( [
 				'name'   => 'metaType',
 				'values' => [
 					[
@@ -191,7 +199,7 @@ class MetaQueryType extends InputObjectType {
 					],
 				],
 			] );
-		}
+		} // End if().
 		return ! empty( self::$meta_type ) ? self::$meta_type : null;
 	}
 
