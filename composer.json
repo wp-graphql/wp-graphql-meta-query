@@ -15,7 +15,8 @@
     "satooshi/php-coveralls": "~1.0",
     "lucatume/wp-browser": "^1.21",
     "codeception/c3": "2.*",
-    "phpunit/phpcov": "^4.0"
+    "phpunit/phpcov": "^4.0",
+    "phpunit/phpunit": "^4.8"
   },
   "config": {
     "optimize-autoloader": true

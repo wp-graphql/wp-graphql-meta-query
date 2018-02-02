@@ -55,7 +55,7 @@ class MetaQueryType extends WPInputObjectType {
 									'description' => __( 'Custom field value', 'wp-graphql' ),
 								],
 								'compare' => [
-									'type'        => self::meta_compare_enum(),
+									'type'            => self::meta_compare_enum(),
 									'description' => __( 'Custom field value', 'wp-graphql' ),
 								],
 								'type'    => [
