@@ -195,4 +195,4 @@ function graphql_init_meta_query() {
 	return new \WPGraphQL\MetaQuery();
 }
 
-add_action( 'graphql_generate_schema', '\WPGraphql\graphql_init_meta_query' );
+add_action( 'graphql_init', '\WPGraphql\graphql_init_meta_query' );

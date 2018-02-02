@@ -6,4 +6,5 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'WPGraphQL\\MetaQuery\\Type\\MetaQueryType' => $baseDir . '/src/Type/MetaQueryType.php',
 );
