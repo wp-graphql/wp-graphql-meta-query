@@ -50,12 +50,11 @@ before_script:
   - ls -al
 
 script:
- - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+ - vendor/bin/codecept run wpunit --coverage --coverage-xml
 
 after_success:
   - travis_retry php coveralls.phar -v
 
 cache:
   directories:
-  - vendor
   - $HOME/.composer/cache

@@ -4,6 +4,8 @@ namespace WPGraphQL\MetaQuery\Type;
 use GraphQL\Type\Definition\EnumType;
 use GraphQL\Type\Definition\InputObjectType;
 use WPGraphQL\Types;
+use WPGraphQL\Type\WPInputObjectType;
+use WPGraphQL\Type\WPEnumType;
 
 /**
  * Class MetaQueryType
@@ -12,7 +14,7 @@ use WPGraphQL\Types;
  *
  * @package WPGraphQL\Type
  */
-class MetaQueryType extends InputObjectType {
+class MetaQueryType extends WPInputObjectType {
 
 	private static $meta_compare_enum;
 	private static $meta_type;
@@ -26,15 +28,15 @@ class MetaQueryType extends InputObjectType {
 	 */
 	public function __construct() {
 		$config = [
-			'name'   => 'metaQuery',
+			'name'   => 'MetaQueryArgs',
 			'fields' => function() {
 				$fields = [
 					'relation'  => [
 						'type' => Types::relation_enum(),
 					],
 					'metaArray' => Types::list_of(
-						new InputObjectType( [
-							'name'   => 'metaArray',
+						new WPInputObjectType( [
+							'name'   => 'MetaArray',
 							'fields' => function() {
 								$fields = [
 									'key'     => [
@@ -48,6 +50,7 @@ class MetaQueryType extends InputObjectType {
 									'compare' => [
 										'type'        => self::meta_compare_enum(),
 										'description' => __( 'Custom field value', 'wp-graphql' ),
+										'defaultValue' => '='
 									],
 									'type'    => [
 										'type'        => self::meta_type_enum(),
@@ -75,63 +78,49 @@ class MetaQueryType extends InputObjectType {
 	 */
 	private static function meta_compare_enum() {
 		if ( null === self::$meta_compare_enum ) {
-			self::$meta_compare_enum = new EnumType( [
-				'name'   => 'metaCompare',
+			self::$meta_compare_enum = new WPEnumType( [
+				'name'   => 'MetaCompare',
 				'values' => [
-					[
-						'name'  => 'EQUAL_TO',
+					'EQUAL_TO' => [
 						'value' => '=',
 					],
-					[
-						'name'  => 'NOT_EQUAL_TO',
+					'NOT_EQUAL_TO' => [
 						'value' => '!=',
 					],
-					[
-						'name'  => 'GREATER_THAN',
+					'GREATER_THAN' => [
 						'value' => '>',
 					],
-					[
-						'name'  => 'GREATER_THAN_OR_EQUAL_TO',
+					'GREATER_THAN_OR_EQUAL_TO' => [
 						'value' => '>=',
 					],
-					[
-						'name'  => 'LESS_THAN',
+					'LESS_THAN' => [
 						'value' => '<',
 					],
-					[
-						'name'  => 'LESS_THAN_OR_EQUAL_TO',
+					'LESS_THAN_OR_EQUAL_TO' => [
 						'value' => '<=',
 					],
-					[
-						'name'  => 'LIKE',
+					'LIKE' => [
 						'value' => 'LIKE',
 					],
-					[
-						'name'  => 'NOT_LIKE',
+					'NOT_LIKE' => [
 						'value' => 'NOT LIKE',
 					],
-					[
-						'name'  => 'IN',
+					'IN' => [
 						'value' => 'IN',
 					],
-					[
-						'name'  => 'NOT_IN',
+					'NOT_IN' => [
 						'value' => 'NOT IN',
 					],
-					[
-						'name'  => 'BETWEEN',
+					'BETWEEN' => [
 						'value' => 'BETWEEN',
 					],
-					[
-						'name'  => 'NOT_BETWEEN',
+					'NOT_BETWEEN' => [
 						'value' => 'NOT BETWEEN',
 					],
-					[
-						'name'  => 'EXISTS',
+					'EXISTS' => [
 						'value' => 'EXISTS',
 					],
-					[
-						'name'  => 'NOT_EXISTS',
+					'NOT_EXISTS' => [
 						'value' => 'NOT EXISTS',
 					],
 				],
@@ -150,44 +139,35 @@ class MetaQueryType extends InputObjectType {
 	 */
 	private static function meta_type_enum() {
 		if ( null === self::$meta_type ) {
-			self::$meta_type = new EnumType( [
-				'name'   => 'metaType',
+			self::$meta_type = new WPEnumType( [
+				'name'   => 'MetaType',
 				'values' => [
-					[
-						'name'  => 'NUMERIC',
-						'value' => 'NUMERIC',
+					'NUMERIC' => [
+						'value'  => 'NUMERIC',
 					],
-					[
-						'name'  => 'BINARY',
-						'value' => 'BINARY',
+					'BINARY' => [
+						'value'  => 'BINARY',
 					],
-					[
-						'name'  => 'CHAR',
-						'value' => 'CHAR',
+					'CHAR' => [
+						'value'  => 'CHAR',
 					],
-					[
-						'name'  => 'DATE',
-						'value' => 'DATE',
+					'DATE' => [
+						'value'  => 'DATE',
 					],
-					[
-						'name'  => 'DATETIME',
-						'value' => 'DATETIME',
+					'DATETIME' => [
+						'value'  => 'DATETIME',
 					],
-					[
-						'name'  => 'DECIMAL',
-						'value' => 'DECIMAL',
+					'DECIMAL' => [
+						'value'  => 'DECIMAL',
 					],
-					[
-						'name'  => 'SIGNED',
-						'value' => 'SIGNED',
+					'SIGNED' => [
+						'value'  => 'SIGNED',
 					],
-					[
-						'name'  => 'TIME',
-						'value' => 'TIME',
+					'TIME' => [
+						'value'  => 'TIME',
 					],
-					[
-						'name'  => 'UNSIGNED',
-						'value' => 'UNSIGNED',
+					'UNSIGNED' => [
+						'value'  => 'UNSIGNED',
 					],
 				],
 			] );

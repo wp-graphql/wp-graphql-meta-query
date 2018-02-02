@@ -13,9 +13,11 @@ WP_VERSION=${5-latest}
 SKIP_DB_CREATE=${6-false}
 
 PLUGIN_DIR=$(pwd)
-WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wordpress-tests-lib}
-WP_CORE_DIR=${WP_CORE_DIR-/tmp/wordpress/}
+WP_TESTS_DIR=${WP_TESTS_DIR-/tmp/wp-graphql-meta-query/wordpress-tests-lib}
+WP_CORE_DIR=${WP_CORE_DIR-/tmp/wp-graphql-meta-query/wordpress/}
 DB_SERVE_NAME=${DB_SERVE_NAME-wpgraphql_meta_query_serve}
+
+
 
 download() {
     if [ `which curl` ]; then

@@ -57,7 +57,7 @@ class MetaQuery {
 		 * Filter the query_args for the PostObjectQueryArgsType
 		 * @since 0.0.1
 		 */
-		add_filter( 'graphql_wp_query_input_fields', [ $this, 'add_input_fields' ], 10, 1 );
+		add_filter( 'graphql_QueryArgs_fields', [ $this, 'add_input_fields' ], 10, 1 );
 
 		/**
 		 * Filter the $allowed_custom_args for the PostObjectsConnectionResolver to map the
@@ -97,6 +97,11 @@ class MetaQuery {
 			define( 'WPGRAPHQL_METAQUERY_PLUGIN_FILE', __FILE__ );
 		}
 
+		// Whether to autoload the files or not
+		if ( ! defined( 'WPGRAPHQL_METAQUERY_AUTOLOAD' ) ) {
+			define( 'WPGRAPHQL_METAQUERY_AUTOLOAD', true );
+		}
+
 	}
 
 	/**
@@ -109,8 +114,12 @@ class MetaQuery {
 	 * @return void
 	 */
 	private function includes() {
+
 		// Autoload Required Classes
-		require_once( WPGRAPHQL_METAQUERY_PLUGIN_DIR . 'vendor/autoload.php' );
+		if ( defined( 'WPGRAPHQL_METAQUERY_AUTOLOAD' ) && true == WPGRAPHQL_METAQUERY_AUTOLOAD ) {
+			require_once( WPGRAPHQL_METAQUERY_PLUGIN_DIR . 'vendor/autoload.php' );
+		}
+
 	}
 
 	/**
@@ -124,7 +133,11 @@ class MetaQuery {
 	 * @since 0.0.1
 	 */
 	public function add_input_fields( $fields ) {
-		$fields['metaQuery'] = self::meta_query();
+
+		$fields['metaQuery'] = [
+			'type' => self::meta_query(),
+			'description' => __( 'Query by meta fields', 'wp-graphql-meta-query' ),
+		];
 
 		return $fields;
 	}

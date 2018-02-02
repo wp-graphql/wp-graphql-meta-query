@@ -10,7 +10,7 @@ coverage:
     c3_url: 'http://wp.localhost/wp-content/plugins/wp-graphql-meta-query/c3.php'
     whitelist:
       include:
-        - wp-graphql-jwt-authentication.php
+        - wp-graphql-meta-query.php
         - access-functions.php
         - src/*.php
 extensions:

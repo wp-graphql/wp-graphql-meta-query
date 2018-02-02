@@ -2349,22 +2349,22 @@
         },
         {
             "name": "phpunit/phpcov",
-            "version": "4.0.4",
+            "version": "4.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpcov.git",
-                "reference": "1fc7ed3179a3ed27a386cd2336e91d8e747a3d71"
+                "reference": "19b5781ddfb0be9d6fec6ac515f3f2da27dcfbb5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/1fc7ed3179a3ed27a386cd2336e91d8e747a3d71",
-                "reference": "1fc7ed3179a3ed27a386cd2336e91d8e747a3d71",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpcov/zipball/19b5781ddfb0be9d6fec6ac515f3f2da27dcfbb5",
+                "reference": "19b5781ddfb0be9d6fec6ac515f3f2da27dcfbb5",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.0",
-                "phpunit/php-code-coverage": "^5.2.1",
-                "phpunit/phpunit": "^6.0",
+                "phpunit/php-code-coverage": "^5.2.1 || ^6.0",
+                "phpunit/phpunit": "^6.0 || ^7.0",
                 "sebastian/diff": "^1.1 || ^2.0",
                 "sebastian/finder-facade": "^1.1",
                 "sebastian/version": "^2.0",
@@ -2397,7 +2397,7 @@
             ],
             "description": "CLI frontend for php-code-coverage",
             "homepage": "https://github.com/sebastianbergmann/phpcov",
-            "time": "2018-01-17T16:55:55+00:00"
+            "time": "2018-02-02T10:07:44+00:00"
         },
         {
             "name": "phpunit/phpunit",

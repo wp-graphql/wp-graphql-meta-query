@@ -13,3 +13,4 @@ vendor/*
 c3.php
 !/tests
 /tests/*.suite.yml
+/tests/_output
