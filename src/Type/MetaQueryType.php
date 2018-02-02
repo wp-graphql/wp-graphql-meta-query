@@ -5,8 +5,6 @@ use GraphQL\Type\Definition\EnumType;
 use WPGraphQL\Type\WPEnumType;
 use WPGraphQL\Type\WPInputObjectType;
 use WPGraphQL\Types;
-use WPGraphQL\Type\WPInputObjectType;
-use WPGraphQL\Type\WPEnumType;
 
 /**
  * Class MetaQueryType
