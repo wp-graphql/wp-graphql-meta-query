@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name: WP GraphQL Meta Query
+ * Plugin Name: WPGraphQL Meta Query
  * Plugin URI: https://github.com/wp-graphql/wp-graphql-meta-query
- * Description: Meta_Query support for the WPGraphQL plugin
- * Author: Digital First Media, Jason Bahl
+ * Description: Adds Meta Query support for the WPGraphQL plugin. Requires WPGraphQL version 0.0.23 or newer.
+ * Author: Jason Bahl
  * Author URI: http://www.wpgraphql.com
- * Version: 0.0.1
+ * Version: 0.0.4
  * Text Domain: wp-graphql-meta-query
  * Requires at least: 4.7.0
  * Tested up to: 4.7.1
  *
  * @package WPGraphQLMetaQuery
- * @category Core
- * @author Digital First Media, Jason Bahl
- * @version 0.0.5
+ * @category WPGraphQL
+ * @author Jason Bahl
+ * @version 0.0.4
  */
 namespace WPGraphQL;
 
@@ -79,7 +79,7 @@ class MetaQuery {
 
 		// Plugin version.
 		if ( ! defined( 'WPGRAPHQL_METAQUERY_VERSION' ) ) {
-			define( 'WPGRAPHQL_METAQUERY_VERSION', '0.0.1' );
+			define( 'WPGRAPHQL_METAQUERY_VERSION', '0.0.4' );
 		}
 
 		// Plugin Folder Path.

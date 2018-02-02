@@ -1,10 +1,20 @@
-#WPGraphQL Meta Query
+# WPGraphQL Meta Query
+This plugin adds Meta_Query support to the WP GraphQL Plugin for postObject query args.
 
-This plugin adds Meta_Query support to the WP GraphQL Plugin for postObject query args. 
+
+## Why is this an extension and not part of WPGraphQL?
+
+Meta Queries _can_ be expensive and have been known to actually take sites down, which is why they are not
+part of the core WPGraphQL plugin. 
+
+If you need meta queries for your WPGraphQL system, this plugin enables them, but use with caution. It might be better
+to hook into WPGraphQL and define specific meta queries that you _know_ you need and are not going to take your system 
+down instead of allowing just any meta_query via this plugin, but you could use this plugin as an example of how
+to hook into WPGraphQL to add inputs and map those inputs to the WP_Query that gets executed.
 
 ## Pre-req's
 Using this plugin requires having the <a href="https://github.com/wp-graphql/wp-graphql" target="_blank">WPGraphQL plugin</a> installed 
-and activated. 
+and activated. Requires WPGraphQL version 0.0.15 or newer.
 
 ## Activating / Using
 Activate the plugin like you would any other WordPress plugin. 
