@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name: WP GraphQL Meta Query
+ * Plugin Name: WPGraphQL Meta Query
  * Plugin URI: https://github.com/wp-graphql/wp-graphql-meta-query
- * Description: Meta_Query support for the WPGraphQL plugin. Requires WPGraphQL version 0.0.15 or newer.
- * Author: Digital First Media, Jason Bahl
+ * Description: Adds Meta Query support for the WPGraphQL plugin. Requires WPGraphQL version 0.0.23 or newer.
+ * Author: Jason Bahl
  * Author URI: http://www.wpgraphql.com
- * Version: 0.0.2
+ * Version: 0.0.4
  * Text Domain: wp-graphql-meta-query
  * Requires at least: 4.7.0
  * Tested up to: 4.7.1
  *
  * @package WPGraphQLMetaQuery
- * @category Core
- * @author Digital First Media, Jason Bahl
- * @version 0.0.5
+ * @category WPGraphQL
+ * @author Jason Bahl
+ * @version 0.0.4
  */
 namespace WPGraphQL;
 
@@ -57,7 +57,7 @@ class MetaQuery {
 		 * Filter the query_args for the PostObjectQueryArgsType
 		 * @since 0.0.1
 		 */
-		add_filter( 'graphql_queryArgs_fields', [ $this, 'add_input_fields' ], 10, 1 );
+		add_filter( 'graphql_QueryArgs_fields', [ $this, 'add_input_fields' ], 10, 1 );
 
 		/**
 		 * Filter the $allowed_custom_args for the PostObjectsConnectionResolver to map the
@@ -79,7 +79,7 @@ class MetaQuery {
 
 		// Plugin version.
 		if ( ! defined( 'WPGRAPHQL_METAQUERY_VERSION' ) ) {
-			define( 'WPGRAPHQL_METAQUERY_VERSION', '0.0.2' );
+			define( 'WPGRAPHQL_METAQUERY_VERSION', '0.0.4' );
 		}
 
 		// Plugin Folder Path.
@@ -97,6 +97,11 @@ class MetaQuery {
 			define( 'WPGRAPHQL_METAQUERY_PLUGIN_FILE', __FILE__ );
 		}
 
+		// Whether to autoload the files or not
+		if ( ! defined( 'WPGRAPHQL_METAQUERY_AUTOLOAD' ) ) {
+			define( 'WPGRAPHQL_METAQUERY_AUTOLOAD', true );
+		}
+
 	}
 
 	/**
@@ -109,8 +114,12 @@ class MetaQuery {
 	 * @return void
 	 */
 	private function includes() {
+
 		// Autoload Required Classes
-		require_once( WPGRAPHQL_METAQUERY_PLUGIN_DIR . 'vendor/autoload.php' );
+		if ( defined( 'WPGRAPHQL_METAQUERY_AUTOLOAD' ) && true == WPGRAPHQL_METAQUERY_AUTOLOAD ) {
+			require_once( WPGRAPHQL_METAQUERY_PLUGIN_DIR . 'vendor/autoload.php' );
+		}
+
 	}
 
 	/**
@@ -124,7 +133,11 @@ class MetaQuery {
 	 * @since 0.0.1
 	 */
 	public function add_input_fields( $fields ) {
-		$fields['metaQuery'] = self::meta_query();
+
+		$fields['metaQuery'] = [
+			'type' => self::meta_query(),
+			'description' => __( 'Query by meta fields', 'wp-graphql-meta-query' ),
+		];
 
 		return $fields;
 	}
@@ -195,4 +208,4 @@ function graphql_init_meta_query() {
 	return new \WPGraphQL\MetaQuery();
 }
 
-add_action( 'graphql_generate_schema', '\WPGraphql\graphql_init_meta_query' );
+add_action( 'graphql_init', '\WPGraphql\graphql_init_meta_query' );
