@@ -1,0 +1,16 @@
+.DS_Store
+Thumbs.db
+wp-cli.local.yml
+node_modules/
+*.zip
+*.tar.gz
+.idea
+coverage/
+build/
+vendor/*
+!vendor/composer
+!vendor/autoload.php
+c3.php
+!/tests
+/tests/*.suite.yml
+/tests/_output
