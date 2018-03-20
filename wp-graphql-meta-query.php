@@ -32,8 +32,6 @@ class MetaQuery {
 	 */
 	private static $meta_query;
 
-	private $types;
-
 	/**
 	 * MetaQuery constructor.
 	 *
@@ -54,20 +52,6 @@ class MetaQuery {
 		 * @since 0.0.1
 		 */
 		$this->includes();
-
-		$post_types = \WPGraphQL::$allowed_post_types;
-
-		if ( ! empty( $post_types ) && is_array( $post_types ) ) {
-
-			foreach ( $post_types as $post_type ) {
-
-				$post_type_object = get_post_type_object( $post_type );
-
-				$this->types[] = $post_type_object->graphql_plural_name;
-
-			}
-
-		};
 
 		/**
 		 * Filter the query_args for the PostObjectQueryArgsType
@@ -154,7 +138,6 @@ class MetaQuery {
 		if ( isset( $config['queryClass'] ) && 'WP_Query' === $config['queryClass'] ) {
 			$fields['metaQuery'] = self::meta_query( $type_name );
 		}
-
 		return $fields;
 	}
 
