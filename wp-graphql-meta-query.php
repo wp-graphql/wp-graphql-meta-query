@@ -32,6 +32,8 @@ class MetaQuery {
 	 */
 	private static $meta_query;
 
+	private $types;
+
 	/**
 	 * MetaQuery constructor.
 	 *
@@ -53,11 +55,25 @@ class MetaQuery {
 		 */
 		$this->includes();
 
+		$post_types = \WPGraphQL::$allowed_post_types;
+
+		if ( ! empty( $post_types ) && is_array( $post_types ) ) {
+
+			foreach ( $post_types as $post_type ) {
+
+				$post_type_object = get_post_type_object( $post_type );
+
+				$this->types[] = $post_type_object->graphql_plural_name;
+
+			}
+
+		};
+
 		/**
 		 * Filter the query_args for the PostObjectQueryArgsType
 		 * @since 0.0.1
 		 */
-		add_filter( 'graphql_queryArgs_fields', [ $this, 'add_input_fields' ], 10, 1 );
+		add_filter( 'graphql_input_fields', [ $this, 'add_input_fields' ], 10, 3 );
 
 		/**
 		 * Filter the $allowed_custom_args for the PostObjectsConnectionResolver to map the
@@ -118,14 +134,17 @@ class MetaQuery {
 	 *
 	 * This adds the metaQuery input fields
 	 *
-	 * @param $fields
+	 * @param array $fields
+	 * @param string $type_name
+	 * @param array $config
 	 *
 	 * @return mixed
 	 * @since 0.0.1
 	 */
-	public function add_input_fields( $fields ) {
-		$fields['metaQuery'] = self::meta_query();
-
+	public function add_input_fields( $fields, $type_name, $config ) {
+		if ( isset( $config['queryClass'] ) && 'WP_Query' === $config['queryClass'] ) {
+			$fields['metaQuery'] = self::meta_query( $type_name );
+		}
 		return $fields;
 	}
 
@@ -178,11 +197,12 @@ class MetaQuery {
 	/**
 	 * meta_query
 	 * This returns the definition for the MetaQueryType
+	 * @param string $type_name
 	 * @return MetaQueryType
 	 * @since 0.0.1
 	 */
-	public static function meta_query() {
-		return self::$meta_query ? : ( self::$meta_query = new MetaQueryType() );
+	public static function meta_query( $type_name ) {
+		return self::$meta_query[ $type_name ] ? : ( self::$meta_query[ $type_name ] = new MetaQueryType( $type_name ) );
 	}
 
 }
@@ -195,4 +215,4 @@ function graphql_init_meta_query() {
 	return new \WPGraphQL\MetaQuery();
 }
 
-add_action( 'graphql_generate_schema', '\WPGraphql\graphql_init_meta_query' );
+add_action( 'graphql_init', '\WPGraphql\graphql_init_meta_query' );
