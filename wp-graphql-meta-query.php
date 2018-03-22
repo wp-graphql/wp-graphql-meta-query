@@ -195,7 +195,10 @@ class MetaQuery {
 	 * @since 0.0.1
 	 */
 	public static function meta_query( $type_name ) {
-		return self::$meta_query[ $type_name ] ? : ( self::$meta_query[ $type_name ] = new MetaQueryType( $type_name ) );
+		if ( empty( self::$meta_query[ $type_name ] ) ) {
+			self::$meta_query[ $type_name ] = new MetaQueryType( $type_name );
+		}
+		return ! empty( self::$meta_query[ $type_name ] ) ? self::$meta_query[ $type_name ] : null;
 	}
 
 }
