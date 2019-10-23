@@ -2,19 +2,16 @@
 /**
  * Plugin Name: WPGraphQL Meta Query
  * Plugin URI: https://github.com/wp-graphql/wp-graphql-meta-query
- * Description: Adds Meta Query support for the WPGraphQL plugin. Requires WPGraphQL version 0.0.23 or newer.
- * Author: Jason Bahl
- * Author URI: http://www.wpgraphql.com
- * Version: 0.0.4
- * Text Domain: wp-graphql-meta-query
- * Requires at least: 4.7.0
- * Tested up to: 4.7.1
+ * Description: Adds Meta Query support for the WPGraphQL plugin. Requires WPGraphQL version 0.0.23
+ * or newer. Author: Jason Bahl Author URI: http://www.wpgraphql.com Version: 0.1.0 Text Domain:
+ * wp-graphql-meta-query Requires at least: 4.7.0 Tested up to: 4.7.1
  *
- * @package WPGraphQLMetaQuery
+ * @package  WPGraphQLMetaQuery
  * @category WPGraphQL
- * @author Jason Bahl
- * @version 0.0.4
+ * @author   Jason Bahl
+ * @version  0.1.0
  */
+
 namespace WPGraphQL;
 
 // Exit if accessed directly.
@@ -22,15 +19,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-use WPGraphQL\MetaQuery\Type\MetaQueryType;
+use WPGraphQL\Registry\TypeRegistry;
 
 class MetaQuery {
-
-	/**
-	 * This holds the MetaQuery input type object
-	 * @var $meta_query
-	 */
-	private static $meta_query;
 
 	/**
 	 * MetaQuery constructor.
@@ -43,25 +34,29 @@ class MetaQuery {
 
 		/**
 		 * Setup plugin constants
+		 *
 		 * @since 0.0.1
 		 */
 		$this->setup_constants();
 
 		/**
 		 * Included required files
+		 *
 		 * @since 0.0.1
 		 */
 		$this->includes();
 
 		/**
 		 * Filter the query_args for the PostObjectQueryArgsType
+		 *
 		 * @since 0.0.1
 		 */
-		add_filter( 'graphql_input_fields', [ $this, 'add_input_fields' ], 10, 3 );
+		add_filter( 'graphql_input_fields', [ $this, 'add_input_fields' ], 10, 4 );
 
 		/**
 		 * Filter the $allowed_custom_args for the PostObjectsConnectionResolver to map the
 		 * metaQuery input to WP_Query terms
+		 *
 		 * @since 0.0.1
 		 */
 		add_filter( 'graphql_map_input_fields_to_wp_query', [ $this, 'map_input_fields' ], 10, 2 );
@@ -72,14 +67,14 @@ class MetaQuery {
 	 * Setup plugin constants.
 	 *
 	 * @access private
-	 * @since 0.0.1
+	 * @since  0.0.1
 	 * @return void
 	 */
 	private function setup_constants() {
 
 		// Plugin version.
 		if ( ! defined( 'WPGRAPHQL_METAQUERY_VERSION' ) ) {
-			define( 'WPGRAPHQL_METAQUERY_VERSION', '0.0.4' );
+			define( 'WPGRAPHQL_METAQUERY_VERSION', '0.1.0' );
 		}
 
 		// Plugin Folder Path.
@@ -110,7 +105,7 @@ class MetaQuery {
 	 * Uses composer's autoload
 	 *
 	 * @access private
-	 * @since 0.0.1
+	 * @since  0.0.1
 	 * @return void
 	 */
 	private function includes() {
@@ -127,18 +122,170 @@ class MetaQuery {
 	 *
 	 * This adds the metaQuery input fields
 	 *
-	 * @param array $fields
-	 * @param string $type_name
-	 * @param array $config
+	 * @param array        $fields
+	 * @param string       $type_name
+	 * @param array        $config
+	 * @param TypeRegistry $type_registry
 	 *
 	 * @return mixed
 	 * @since 0.0.1
+	 * @throws \Exception
 	 */
-	public function add_input_fields( $fields, $type_name, $config ) {
+	public function add_input_fields( $fields, $type_name, $config, $type_registry ) {
 		if ( isset( $config['queryClass'] ) && 'WP_Query' === $config['queryClass'] ) {
-			$fields['metaQuery'] = self::meta_query( $type_name );
+			$this->register_types( $type_name, $type_registry );
+			$fields['metaQuery'] = [
+				'type' => $type_name . 'MetaQuery',
+			];
 		}
+
 		return $fields;
+	}
+
+	/**
+	 * @param              $type_name
+	 * @param TypeRegistry $type_registry
+	 *
+	 * @throws \Exception
+	 */
+	public function register_types( $type_name, TypeRegistry $type_registry ) {
+
+		$type_registry->register_enum_type( $type_name . 'MetaTypeEnum', [
+			'values' => [
+				'NUMERIC' => [
+					'name'  => 'NUMERIC',
+					'value' => 'NUMERIC',
+				],
+				'BINARY' => [
+					'name'  => 'BINARY',
+					'value' => 'BINARY',
+				],
+				'CHAR' => [
+					'name'  => 'CHAR',
+					'value' => 'CHAR',
+				],
+				'DATE' => [
+					'name'  => 'DATE',
+					'value' => 'DATE',
+				],
+				'DATETIME' => [
+					'name'  => 'DATETIME',
+					'value' => 'DATETIME',
+				],
+				'DECIMAL' => [
+					'name'  => 'DECIMAL',
+					'value' => 'DECIMAL',
+				],
+				'SIGNED' => [
+					'name'  => 'SIGNED',
+					'value' => 'SIGNED',
+				],
+				'TIME' => [
+					'name'  => 'TIME',
+					'value' => 'TIME',
+				],
+				'UNSIGNED' => [
+					'name'  => 'UNSIGNED',
+					'value' => 'UNSIGNED',
+				],
+			]
+		] );
+
+		$type_registry->register_enum_type( $type_name . 'MetaCompareEnum', [
+			'values' => [
+				'EQUAL_TO'                 => [
+					'name'  => 'EQUAL_TO',
+					'value' => '=',
+				],
+				'NOT_EQUAL_TO'             => [
+					'name'  => 'NOT_EQUAL_TO',
+					'value' => '!=',
+				],
+				'GREATER_THAN'             => [
+					'name'  => 'GREATER_THAN',
+					'value' => '>',
+				],
+				'GREATER_THAN_OR_EQUAL_TO' => [
+					'name'  => 'GREATER_THAN_OR_EQUAL_TO',
+					'value' => '>=',
+				],
+				'LESS_THAN'                => [
+					'name'  => 'LESS_THAN',
+					'value' => '<',
+				],
+				'LESS_THAN_OR_EQUAL_TO'    => [
+					'name'  => 'LESS_THAN_OR_EQUAL_TO',
+					'value' => '<=',
+				],
+				'LIKE'                     => [
+					'name'  => 'LIKE',
+					'value' => 'LIKE',
+				],
+				'NOT_LIKE'                 => [
+					'name'  => 'NOT_LIKE',
+					'value' => 'NOT LIKE',
+				],
+				'IN'                       => [
+					'name'  => 'IN',
+					'value' => 'IN',
+				],
+				'NOT_IN'                   => [
+					'name'  => 'NOT_IN',
+					'value' => 'NOT IN',
+				],
+				'BETWEEN'                  => [
+					'name'  => 'BETWEEN',
+					'value' => 'BETWEEN',
+				],
+				'NOT_BETWEEN'              => [
+					'name'  => 'NOT_BETWEEN',
+					'value' => 'NOT BETWEEN',
+				],
+				'EXISTS'                   => [
+					'name'  => 'EXISTS',
+					'value' => 'EXISTS',
+				],
+				'NOT_EXISTS'               => [
+					'name'  => 'NOT_EXISTS',
+					'value' => 'NOT EXISTS',
+				],
+			]
+		] );
+
+		$type_registry->register_input_type( $type_name . 'MetaArray', [
+			'fields' => [
+				'key'     => [
+					'type'        => 'String',
+					'description' => __( 'Custom field key', 'wp-graphql' ),
+				],
+				'value'   => [
+					'type'        => 'String',
+					'description' => __( 'Custom field value', 'wp-graphql' ),
+				],
+				'compare' => [
+					'type'        => $type_name . 'MetaCompareEnum',
+					'description' => __( 'Custom field value', 'wp-graphql' ),
+				],
+				'type'    => [
+					'type'        => $type_name . 'MetaTypeEnum',
+					'description' => __( 'Custom field value', 'wp-graphql' ),
+				],
+			]
+		] );
+
+		$type_registry->register_input_type( $type_name . 'MetaQuery', [
+			'fields' => [
+				'relation'  => [
+					'type' => 'RelationEnum',
+				],
+				'metaArray' => [
+					'type' => [
+						'list_of' => $type_name . 'MetaArray',
+					],
+				],
+			]
+		] );
+
 	}
 
 	/**
@@ -157,6 +304,7 @@ class MetaQuery {
 		/**
 		 * check to see if the metaQuery came through with the input $args, and
 		 * map it properly to the $queryArgs that are returned and passed to the WP_Query
+		 *
 		 * @since 0.0.1
 		 */
 		$meta_query = null;
@@ -181,34 +329,22 @@ class MetaQuery {
 
 		/**
 		 * Retrun the $query_args
+		 *
 		 * @since 0.0.1
 		 */
 		return $query_args;
 
 	}
 
-	/**
-	 * meta_query
-	 * This returns the definition for the MetaQueryType
-	 * @param string $type_name
-	 * @return MetaQueryType
-	 * @since 0.0.1
-	 */
-	public static function meta_query( $type_name ) {
-		if ( empty( self::$meta_query[ $type_name ] ) ) {
-			self::$meta_query[ $type_name ] = new MetaQueryType( $type_name );
-		}
-		return ! empty( self::$meta_query[ $type_name ] ) ? self::$meta_query[ $type_name ] : null;
-	}
-
 }
 
 /**
  * Instantiate the MetaQuery class on graphql_init
+ *
  * @return MetaQuery
  */
 function graphql_init_meta_query() {
-	return new \WPGraphQL\MetaQuery();
+	return new MetaQuery();
 }
 
 add_action( 'graphql_init', '\WPGraphql\graphql_init_meta_query' );

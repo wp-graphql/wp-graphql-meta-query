@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitc02385e0529cf5764a03a73de570fb0e
+class ComposerStaticInitb36d78f6e975f050c464d10b2238ae6a
 {
     public static $prefixLengthsPsr4 = array (
         'W' => 
@@ -20,16 +20,11 @@ class ComposerStaticInitc02385e0529cf5764a03a73de570fb0e
         ),
     );
 
-    public static $classMap = array (
-        'WPGraphQL\\MetaQuery\\Type\\MetaQueryType' => __DIR__ . '/../..' . '/src/Type/MetaQueryType.php',
-    );
-
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitc02385e0529cf5764a03a73de570fb0e::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitc02385e0529cf5764a03a73de570fb0e::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInitc02385e0529cf5764a03a73de570fb0e::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitb36d78f6e975f050c464d10b2238ae6a::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitb36d78f6e975f050c464d10b2238ae6a::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }
