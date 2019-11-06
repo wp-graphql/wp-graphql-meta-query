@@ -4,27 +4,11 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInitb36d78f6e975f050c464d10b2238ae6a
+class ComposerStaticInitffba3894973efb34186df2479bf83aae
 {
-    public static $prefixLengthsPsr4 = array (
-        'W' => 
-        array (
-            'WPGraphQL\\MetaQuery\\' => 20,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'WPGraphQL\\MetaQuery\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
-    );
-
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitb36d78f6e975f050c464d10b2238ae6a::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitb36d78f6e975f050c464d10b2238ae6a::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }
