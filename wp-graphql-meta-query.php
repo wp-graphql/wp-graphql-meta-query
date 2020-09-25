@@ -264,7 +264,7 @@ class MetaQuery {
 					'description' => __( 'Custom field key', 'wp-graphql' ),
 				],
 				'value'   => [
-					'type'        => 'String',
+					'type'        => ['String','list_of' => 'String'],
 					'description' => __( 'Custom field value', 'wp-graphql' ),
 				],
 				'compare' => [
