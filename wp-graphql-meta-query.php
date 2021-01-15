@@ -254,6 +254,19 @@ class MetaQuery {
 					'name'  => 'NOT_EXISTS',
 					'value' => 'NOT EXISTS',
 				],
+				'REGEXP'                     => [
+					'name'  => 'REGEXP',
+					'value' => 'REGEXP',
+				],
+				'NOT_REGEXP'                     => [
+					'name'  => 'NOT_REGEXP',
+					'value' => 'NOT REGEXP',
+				],
+				'RLIKE'                     => [
+					'name'  => 'RLIKE',
+					'value' => 'RLIKE',
+				],
+			]
 			]
 		] );
 
@@ -264,7 +277,7 @@ class MetaQuery {
 					'description' => __( 'Custom field key', 'wp-graphql' ),
 				],
 				'value'   => [
-					'type'        => ['String','list_of' => 'String'],
+					'type'        => 'String',
 					'description' => __( 'Custom field value', 'wp-graphql' ),
 				],
 				'compare' => [
