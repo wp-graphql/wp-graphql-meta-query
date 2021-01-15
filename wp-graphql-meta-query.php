@@ -254,19 +254,18 @@ class MetaQuery {
 					'name'  => 'NOT_EXISTS',
 					'value' => 'NOT EXISTS',
 				],
-				'REGEXP'                     => [
-					'name'  => 'REGEXP',
-					'value' => 'REGEXP',
+				'REXEXP'               => [
+					'name'  => 'REXEXP',
+					'value' => 'REXEXP',
 				],
-				'NOT_REGEXP'                     => [
-					'name'  => 'NOT_REGEXP',
-					'value' => 'NOT REGEXP',
+				'NOT_REXEXP'           => [
+					'name'  => 'NOT_REXEXP',
+					'value' => 'NOT REXEXP',
 				],
-				'RLIKE'                     => [
+				'RLIKE'               => [
 					'name'  => 'RLIKE',
 					'value' => 'RLIKE',
 				],
-			]
 			]
 		] );
 
