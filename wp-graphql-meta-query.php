@@ -267,6 +267,10 @@ class MetaQuery {
 					'type'        => 'String',
 					'description' => __( 'Custom field value', 'wp-graphql' ),
 				],
+				'values'  => array(
+					'type'        => array( 'list_of' => 'String' ),
+					'description' => __( 'Custom field values, will override \'value\'', 'wp-graphql' ),
+				),
 				'compare' => [
 					'type'        => $type_name . 'MetaCompareEnum',
 					'description' => __( 'Custom field value', 'wp-graphql' ),
@@ -319,9 +323,14 @@ class MetaQuery {
 				if ( 2 < count( $meta_query['metaArray'] ) ) {
 					unset( $meta_query['relation'] );
 				}
-				foreach ( $meta_query['metaArray'] as $meta_query_key => $value ) {
+				foreach ( $meta_query['metaArray'] as $meta_query_index => $meta_query_value ) {
 					$meta_query[] = [
-						$meta_query_key => $value,
+						$meta_query_index => array(
+							'key'     => $meta_query_value['key'],
+							'compare' => $meta_query_value['compare'],
+							'type'    => $meta_query_value['type'],
+							'value'   => $meta_query_value['values'] ?? $meta_query_value['value'],
+						),
 					];
 				}
 			}
