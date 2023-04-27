@@ -316,9 +316,6 @@ class MetaQuery {
 		if ( ! empty( $input_args['metaQuery'] ) ) {
 			$meta_query = $input_args['metaQuery'];
 			if ( ! empty( $meta_query['metaArray'] ) && is_array( $meta_query['metaArray'] ) ) {
-				if ( 2 < count( $meta_query['metaArray'] ) ) {
-					unset( $meta_query['relation'] );
-				}
 				foreach ( $meta_query['metaArray'] as $meta_query_key => $value ) {
 					$meta_query[] = [
 						$meta_query_key => $value,
